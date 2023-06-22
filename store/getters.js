@@ -1,5 +1,8 @@
 export default {
-  hi (state) {
-    return state.hi
+  articlesList (state) {
+    return state.articlesList
+  },
+  articlesFav (state) {
+    return state.articlesFav
   }
 }

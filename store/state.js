@@ -1,5 +1,6 @@
 const initialState = {
-  hi: 'Hola!'
+  articlesList: [],
+  articlesFav: [],
 }
 
 export default () => {
