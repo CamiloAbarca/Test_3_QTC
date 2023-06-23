@@ -1,97 +1,66 @@
 <template>
-  <div>
-    <v-card>
-      <v-card-subtitle>
-        <v-text-field
+  <div class="form">
+    <h3>Agregar Post</h3>
+    <v-text-field
       v-model="titleArt"
       label="Título"
+      id="title"
+      prepend-icon="mdi-text"
     ></v-text-field>
-      </v-card-subtitle>
-      <v-card-subtitle>
     <v-textarea
       v-model="contentArt"
-      name="input-7-4"
       label="Contenido"
+      id="content"
+      class="mx-2"
+      rows="1"
+      prepend-icon="mdi-comment"
     ></v-textarea>
-  </v-card-subtitle>
-  <!--
-  <v-card-subtitle>
     <v-file-input
-      v-model="imgArt"
-      accept="image/*"
-      label="Imagen"
+      label="Imagen..."
+      filled
+      prepend-icon="mdi-camera"
     ></v-file-input>
-    </v-card-subtitle>
-    -->
     <v-card-subtitle>
       <v-btn
-      class="mr-4"
-      @click="createArticle(titleArt, contentArt)"
-    >
-      Guardar
-    </v-btn>
+        id="btnSave"
+        class="justify-center"
+        @click="createArticle(titleArt, contentArt, imgArt)"
+      >
+        Guardar
+      </v-btn>
     </v-card-subtitle>
-    
-  </v-card>
-</div>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
-import { ARTICLES_LIST } from '~/store/mutations.types'
-
+import { ARTICLES_LIST } from "~/store/mutations.types";
 
 export default {
-  data () {
+  data() {
     return {
-      titleArt: '',
-      contentArt: '',
-      imgArt: ''
-    }
+      titleArt: "",
+      contentArt: "",
+      imgArt: "",
+    };
   },
 
   methods: {
-
-    async createArticle (title, content) {
-      console.log(title, content)
-      const list = [...this.articlesList]
-      const newArticle = {title, content}
-      list.push(newArticle)
-      this.$store.commit(ARTICLES_LIST, list)
-      console.log(this.articlesList)
+    async createArticle(title, content, img) {
+      const list = [...this.articlesList];
+      const newArticle = { title, content, img };
+      list.push(newArticle);
+      this.$store.commit(ARTICLES_LIST, list);
+      console.log(list);
     },
-
-    /*
-    async addQuotes (result) {
-      const list = [...this.quoteList]
-      list.push(result)
-      this.$store.commit(SET_QUOTELIST, list)
-
-    },
-
-    async deleteQuotes (index) {
-      const list = [...this.quoteList]
-      list.splice(index, 1)
-      this.$store.commit(SET_QUOTELIST, list)
-    },
-
-    
-
-    async updateQuote () {
-
-    }
-    */
   },
 
   computed: {
-    ...mapGetters([
-      'articlesList'
-    ])
-  }
-}
+    ...mapGetters(["articlesList"]),
+  },
+};
 </script>
 
 <style>
-
 </style>

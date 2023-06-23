@@ -2,32 +2,18 @@
   <v-container class="grey lighten-5">
     <v-row no-gutters>
       <v-col order="last">
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-        >
+        <v-card id="form" class="pa-2" outlined tile>
           <Form />
         </v-card>
       </v-col>
       <v-col>
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-        >
-          <Test />
+        <v-card id="lista" class="pa-2" outlined tile>
+          <ListCards />
         </v-card>
       </v-col>
       <v-col order="first">
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-        >
-          <h3>Artículos guardados</h3>
-          <br>
-          <List />
+        <v-card id="fav" class="pa-2" outlined tile>
+          <ListSaves />
         </v-card>
       </v-col>
     </v-row>
@@ -35,15 +21,36 @@
 </template>
 
 <script>
-import Test from '~/components/Test.vue'
-  export default {
-    layout: 'empty',
-    components: {
-      Test
-    }
-  }
+import ListCards from "../components/ListCards.vue";
+import Form from "../components/Form.vue";
+import ListSaves from "../components/ListSaves.vue";
+
+export default {
+  components: {
+    ListCards,
+    Form,
+    ListSaves,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+.form {
+  width: 100%;
+  display: grid;
+  place-content: center;
+  padding-top: 80px;
+}
 
+.lista {
+  width: 100%;
+  display: grid;
+  place-content: center;
+}
+
+.fav {
+  width: 100%;
+  display: grid;
+  place-content: center;
+}
 </style>
