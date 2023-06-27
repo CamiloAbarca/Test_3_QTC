@@ -39,7 +39,8 @@ export default {
   width: 100%;
   display: grid;
   place-content: center;
-  padding-top: 80px;
+  padding-top: 50px;
+  padding-block: 50px;
 }
 
 .lista {

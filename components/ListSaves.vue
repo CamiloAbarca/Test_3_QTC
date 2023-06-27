@@ -37,11 +37,6 @@ export default {
   },
 
   methods: {
-    async addArticles(result) {
-      const list = [...this.articlesFav];
-      list.push(result);
-      this.$store.commit(ARTICLES_FAV, list);
-    },
 
     async deleteFav(index) {
       const list = [...this.articlesFav];
@@ -57,4 +52,8 @@ export default {
 </script>
 
 <style>
+
+h4{
+  text-align: center;
+}
 </style>

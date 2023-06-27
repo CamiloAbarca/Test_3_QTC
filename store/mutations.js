@@ -1,5 +1,5 @@
 import {
-  ARTICLES_LIST, ARTICLES_FAV,
+  ARTICLES_LIST, ARTICLES_FAV, ARTICLES_EDIT
 } from '~/store/mutations.types'
 
 export default {
@@ -8,5 +8,8 @@ export default {
   },
   [ARTICLES_FAV] (state, value) {
     state.articlesFav = value
+  },
+  [ARTICLES_EDIT] (state, value) {
+    state.articlesEdit = value
   }
 }

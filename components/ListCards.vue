@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto" max-width="330">
     <v-card
-      v-for="article in articlesList"
+      v-for="article, index in articlesList"
       :key="article.index"
       fixed-header
       height="375px"
@@ -21,7 +21,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn icon @click="editArticle(article.title)">
+          <v-btn icon @click="editArticle(article.title, article.content)">
             <v-icon>mdi-square-edit-outline</v-icon>
           </v-btn>
 
@@ -41,21 +41,15 @@
 <script>
 import { mapGetters } from "vuex";
 
-import { ARTICLES_LIST, ARTICLES_FAV } from "~/store/mutations.types";
+import { ARTICLES_LIST, ARTICLES_FAV, ARTICLES_EDIT } from "~/store/mutations.types";
 
 export default {
   data() {
     return {
-      index: "",
     };
   },
 
   methods: {
-    async addArticles(result) {
-      const list = [...this.articlesList];
-      list.push(result);
-      this.$store.commit(ARTICLES_LIST, list);
-    },
 
     async deleteArticle(index) {
       const list = [...this.articlesList];
@@ -69,13 +63,18 @@ export default {
       this.$store.commit(ARTICLES_FAV, list);
     },
 
-    async editArticle(title) {
-      document.querySelector("#title").innerHTML = title;
+    async editArticle(title, content) {
+      const list = [...this.articlesEdit];
+      list.push({ title, content });
+      if (list.length >= 0) {
+        list.splice(0,1);
+      }
+      this.$store.commit(ARTICLES_EDIT, list);      
     },
   },
 
   computed: {
-    ...mapGetters(["articlesList", "articlesFav"]),
+    ...mapGetters(["articlesList", "articlesFav", "articlesEdit"]),
   },
 };
 </script>
@@ -84,5 +83,8 @@ export default {
 .articles {
   display: grid;
   place-items: center;  
+}
+h4{
+  text-align: center;
 }
 </style>
