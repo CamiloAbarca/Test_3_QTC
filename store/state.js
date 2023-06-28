@@ -1,6 +1,5 @@
 const initialState = {
   articlesList: [],
-  articlesFav: [],
   articlesEdit: [],
 }
 

@@ -10,14 +10,10 @@
       </thead>
       <tbody>
         <tr
-        v-for="(article, index) in articlesFav" :key="article.index"
+        v-for="article in articlesList" :key="article.index"
         >
-          <td>{{index +1}} - {{ article.title }}</td>
-          <td>
-            <v-btn icon @click="deleteFav(index)">
-            <v-icon>mdi-trash-can-outline</v-icon>
-          </v-btn>
-          </td>
+          <td v-if="article.done === true">- {{ article.title }}</td>
+          
         </tr>
       </tbody>
     </template>
@@ -27,7 +23,7 @@
 <script>
 import { mapGetters } from "vuex";
 
-import { ARTICLES_FAV } from "~/store/mutations.types";
+import { ARTICLES_LIST } from "~/store/mutations.types";
 
 export default {
   data() {
@@ -39,14 +35,14 @@ export default {
   methods: {
 
     async deleteFav(index) {
-      const list = [...this.articlesFav];
+      const list = [...this.articlesList];
       list.splice(index, 1);
-      this.$store.commit(ARTICLES_FAV, list);
+      this.$store.commit(ARTICLES_LIST, list);
     },
   },
 
   computed: {
-    ...mapGetters(["articlesFav"]),
+    ...mapGetters(["articlesList"]),
   },
 };
 </script>
