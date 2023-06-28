@@ -12,7 +12,7 @@
         <tr
         v-for="article in articlesList" :key="article.index"
         >
-          <td v-if="article.done === true">- {{ article.title }}</td>
+          <td v-if="article.fav === true">- {{ article.title }}</td>
           
         </tr>
       </tbody>
@@ -28,7 +28,6 @@ import { ARTICLES_LIST } from "~/store/mutations.types";
 export default {
   data() {
     return {
-      quotes: [],
     };
   },
 

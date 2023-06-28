@@ -21,7 +21,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn icon @click="editArticle(index, article.title, article.content)">
+          <v-btn icon @click="editArticle(index, article.title, article.content, article.fav, article.edit)">
             <v-icon>mdi-square-edit-outline</v-icon>
           </v-btn>
 
@@ -31,8 +31,8 @@
 
           <v-btn
           icon
-          @click="addFav(index, article.title, article.content, article.done)"
-          :disabled="article.done">
+          @click="addFav(index, article.title, article.content, article.fav, article.edit)"
+          :disabled="article.fav">
             <v-icon>mdi-star</v-icon>
           </v-btn>
         </v-card-actions>
@@ -44,7 +44,7 @@
 <script>
 import { mapGetters } from "vuex";
 
-import { ARTICLES_LIST, ARTICLES_EDIT } from "~/store/mutations.types";
+import { ARTICLES_LIST } from "~/store/mutations.types";
 
 export default {
   data() {
@@ -62,26 +62,31 @@ export default {
       this.$store.commit(ARTICLES_LIST, list)
     },
 
-    async addFav(index, title, content, done) {
+    async addFav(index, title, content, fav, edit) {
       const list = [...this.articlesList];
-      done = true
-      list.splice(index, 1, {title: title, content: content, done: done});
+      fav = true
+      edit = true
+      list.splice(index, 1, {title: title, content: content, fav: fav, edit: edit});
       this.$store.commit(ARTICLES_LIST, list)
+      
 
     },
 
-    async editArticle(title, content) {
+    async editArticle(edit) {
+      /*
       const list = [...this.articlesEdit];
       list.push({ title, content });
       if (list.length >= 0) {
         list.splice(0,1);
       }
-      this.$store.commit(ARTICLES_EDIT, list);      
+      this.$store.commit(ARTICLES_EDIT, list);
+      */  
+     edit = true   
     },
   },
 
   computed: {
-    ...mapGetters(["articlesList", "articlesEdit"]),
+    ...mapGetters(["articlesList"]),
   },
 };
 </script>
