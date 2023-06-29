@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="divForm">
+    <div>
       <v-simple-table fixed-header height="375px">
         <template v-slot:default>
           <thead></thead>
@@ -9,14 +9,13 @@
               <td>
                 <template>
                   <v-card class="mx-auto" max-width="300">
+                    <v-card-title>{{ article.title }}</v-card-title>
                     <v-img
                       class="white--text align-end"
                       height="200px"
                       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
                     >
                     </v-img>
-
-                    <v-card-title>{{ article.title }}</v-card-title>
 
                     <v-card-text class="text--primary">
                       <div>{{ article.content }}</div>
