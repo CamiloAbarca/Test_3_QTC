@@ -1,50 +1,39 @@
 <template>
-  <div >
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-text-field
-      v-model="title"
-      :counter="20"
-      :rules="titleRules"
-      label="Título"
-      required
-    ></v-text-field>
-    
+  <div class="container">
+  <div class="divForm">
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field
+        v-model="title"
+        :counter="20"
+        :rules="titleRules"
+        label="Título"
+        required
+      ></v-text-field>
 
-    <v-textarea
-      v-model="content"
-      :counter="280"
-      :rules="contentRules"
-      label="Contenido"
-      required
-    ></v-textarea>
+      <v-textarea
+        v-model="content"
+        :counter="280"
+        :rules="contentRules"
+        label="Contenido"
+        required
+      ></v-textarea>
 
-    <v-file-input
-          v-model="imagen"
-          label="Seleccionar imagen"
-          accept="image/*"
-          @change="cargarImagen"
-        ></v-file-input>
+      <v-file-input
+        v-model="imagen"
+        label="Seleccionar imagen"
+        accept="image/*"
+        @change="cargarImagen"
+      ></v-file-input>
 
-    <v-btn
-      :disabled="!valid"
-      class="mr-4"
-      @click="createArticle()"
-    >
-      Crear
-    </v-btn>
-
-    <v-card>
-      <v-card-title>Pre-visualización de la imagen</v-card-title>
+      <v-btn :disabled="!valid" class="mr-4" @click="createArticle()">
+        Crear
+      </v-btn>
       <v-card-text>
-        <v-img v-if="imagenCargada" :src="imagenCargada" :width="200"/>
+        <v-img v-if="imagenCargada" :src="imagenCargada" :width="200" />
       </v-card-text>
-    </v-card>
-  </v-form>
-</div>  
+    </v-form>
+  </div>
+</div>
 </template>
 
 <script>
@@ -56,50 +45,47 @@ export default {
   data() {
     return {
       files: [],
+      imagenCargada: null,
+      imagen: null,
       valid: true,
-      editBtn: false,
-      title: '',
+      title: "",
       titleRules: [
-        v => !!v || 'Falta título',
-        v => (v && v.length <= 20) || 'El título no puede tener más de 20 caracteres',
+        (v) => !!v || "Falta título",
+        (v) =>
+          (v && v.length <= 20) ||
+          "El título no puede tener más de 20 caracteres",
+        (v) => v.trim().length !== 0 || "El título no puede contener solo espacios"
       ],
-      content: '',
+      content: "",
       contentRules: [
-        v => !!v || 'Falta contenido',
-        v => (v && v.length <= 280) || 'El contenido no puede tener más de 280 caracteres',
+        (v) => !!v || "Falta contenido",
+        (v) =>
+          (v && v.length <= 280) ||
+          "El contenido no puede tener más de 280 caracteres",
+        (v) => v.trim().length !== 0 || "El contenido no puede contener solo espacios"
       ],
     };
   },
 
   methods: {
     async createArticle(title = this.title, content = this.content) {
-        this.$refs.form.validate()
+      this.$refs.form.validate();
 
-        if (title == "" || content == "") {
-          return
-        } else {
-          const list = [...this.articlesList];
-          const fav = false
-          const edit = true
-          const f = this.files
-          const newArticle = { title, content, fav, edit, f};
-          list.unshift(newArticle);
-          this.$store.commit(ARTICLES_LIST, list);
-          this.title = ''
-          this.content = ''
-          this.$refs.form.resetValidation()
-          console.log(list)
-          console.log(this.files)
-        }
+      if (title == "" || content == "") {
+        return;
+      } else {
+        const list = [...this.articlesList];
+        const fav = false;
+        const edit = true;
+        const newArticle = { title, content, fav, edit };
+        list.unshift(newArticle);
+        this.$store.commit(ARTICLES_LIST, list);
+        this.title = "";
+        this.content = "";
+        this.$refs.form.resetValidation();
+      }
     },
 
-    async editForm () {
-      
-      this.editBtn = false
-      
-    },
-
-    //sdfsdf
     async cargarImagen() {
       const reader = new FileReader();
 
@@ -111,9 +97,6 @@ export default {
         reader.readAsDataURL(this.imagen);
       }
     },
-
-
-    //sdsdf
   },
 
   computed: {
@@ -125,5 +108,17 @@ export default {
 <style>
 h3 {
   text-align: center;
+}
+
+.divForm {
+  border: 1px solid #000;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 </style>

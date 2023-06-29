@@ -2,12 +2,12 @@
   <v-container class="grey lighten-5">
     <v-row no-gutters>
       <v-col order="last">
-        <v-card id="form" class="pa-2" outlined tile>
+        <v-card class="pa-2" outlined tile>
           <Form />
         </v-card>
       </v-col>
-      <v-col>
-        <v-card id="lista" class="pa-2" outlined tile>
+      <v-col id="lista">
+        <v-card class="pa-2" outlined tile>
           <ListCards />
         </v-card>
       </v-col>
@@ -35,18 +35,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form {
-  width: 100%;
-  display: grid;
-  place-content: center;
-  padding-top: 50px;
-  padding-block: 50px;
-}
+
 
 .lista {
-  width: 100%;
-  display: grid;
-  place-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .fav {

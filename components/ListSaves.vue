@@ -1,23 +1,19 @@
 <template>
-  <v-simple-table
-    fixed-header
-    height="375px"
-  >
-    <template v-slot:default>
-      <h4>Artículos guardados</h4>
-      <thead>
-        
-      </thead>
-      <tbody>
-        <tr
-        v-for="article in articlesList" :key="article.index"
-        >
-          <td v-if="article.fav === true">- {{ article.title }}</td>
-          
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
+  <div class="container">
+    <div class="divForm">
+      <v-simple-table fixed-header height="375px">
+        <template v-slot:default>
+          <h4>Artículos guardados</h4>
+          <thead></thead>
+          <tbody>
+            <tr v-for="article in articlesList" :key="article.index">
+              <td v-if="article.fav === true">- {{ article.title }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -27,12 +23,10 @@ import { ARTICLES_LIST } from "~/store/mutations.types";
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
 
   methods: {
-
     async deleteFav(index) {
       const list = [...this.articlesList];
       list.splice(index, 1);
@@ -47,8 +41,7 @@ export default {
 </script>
 
 <style>
-
-h4{
+h4 {
   text-align: center;
 }
 </style>
