@@ -77,7 +77,7 @@ export default {
         const list = [...this.articlesList];
         const fav = false;
         const edit = true;
-        const newArticle = { title, content, fav, edit };
+        const newArticle = { title, content, imageUrl: this.imageUrl, fav, edit };
         list.unshift(newArticle);
         this.$store.commit(ARTICLES_LIST, list);
         this.title = "";
