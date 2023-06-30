@@ -1,4 +1,5 @@
 <template>
+  <div id="app" data-app>
   <v-container class="grey lighten-5">
     <v-row no-gutters>
       <v-col order="last">
@@ -6,7 +7,7 @@
           <Form />
         </v-card>
       </v-col>
-      <v-col id="lista">
+      <v-col>
         <v-card class="pa-2" outlined tile>
           <ListCards />
         </v-card>
@@ -18,6 +19,7 @@
       </v-col>
     </v-row>
   </v-container>
+</div>
 </template>
 
 <script>
@@ -35,14 +37,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
-.lista {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-}
 
 .fav {
   width: 100%;
