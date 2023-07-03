@@ -24,7 +24,7 @@
 
           <v-btn
           icon
-          @click="addFav(index, article.title, article.content, article.fav)"
+          @click="addFav(index, article.title, article.content, article.imageUrl, article.fav)"
           :disabled="article.fav">
             <v-icon>mdi-star</v-icon>
           </v-btn>
@@ -118,13 +118,14 @@ export default {
       this.$store.commit(ARTICLES_LIST, list);
     },
 
-    async addFav(index, title, content, fav) {
+    async addFav(index, title, content, image, fav) {
       const list = [...this.articlesList];
       fav = true;
       list.splice(index, 1, {
         title: title,
         content: content,
         fav: fav,
+        imageUrl: image
       });
       this.$store.commit(ARTICLES_LIST, list);
     },
