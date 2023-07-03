@@ -22,6 +22,7 @@
         v-model="imagen"
         label="Seleccionar imagen"
         accept="image/*"
+        requeried
         @change="cargarImagen"
       ></v-file-input>
 
@@ -29,7 +30,7 @@
         Crear
       </v-btn>
       <v-card-text>
-        <v-img v-if="imagenCargada" :src="imagenCargada" :width="200" />
+        <v-img v-if="imagenUp" :src="imagenUp" :width="200" />
       </v-card-text>
     </v-form>
   </div>
@@ -45,7 +46,7 @@ export default {
   data() {
     return {
       files: [],
-      imagenCargada: null,
+      imagenUp: null,
       imagen: null,
       valid: true,
       title: "",
@@ -77,12 +78,14 @@ export default {
         const list = [...this.articlesList];
         const fav = false;
         const edit = true;
-        const newArticle = { title, content, imageUrl: this.imageUrl, fav, edit };
+        const newArticle = { title, content, imageUrl: this.imagenUp, fav, edit };
         list.unshift(newArticle);
         this.$store.commit(ARTICLES_LIST, list);
         this.title = "";
         this.content = "";
         this.$refs.form.resetValidation();
+        this.imagenUp = null;
+        this.imagen = null;
       }
     },
 
@@ -90,7 +93,7 @@ export default {
       const reader = new FileReader();
 
       reader.onload = (event) => {
-        this.imagenCargada = event.target.result;
+        this.imagenUp = event.target.result;
       };
 
       if (this.imagen) {
@@ -101,6 +104,9 @@ export default {
 
   computed: {
     ...mapGetters(["articlesList"]),
+    imageUrl() {
+      return this.$store.getters.getImageUrl;
+    },
   },
 };
 </script>

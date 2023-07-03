@@ -7,8 +7,8 @@
           <v-card-title>
             {{ article.title }}
           </v-card-title>
-          <v-img>
-            <img src="https://avatars.githubusercontent.com/u/22138497?s=200&v=4" alt="">
+          <v-img v-if="article.imageUrl">
+            <v-img :src="article.imageUrl" :width="500" />
           </v-img>
           <v-card-text>
             {{ article.content }}
