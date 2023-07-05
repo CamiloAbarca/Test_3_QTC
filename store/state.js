@@ -1,6 +1,6 @@
 const initialState = {
   articlesList: [],
-  articlesEdit: [],
+  imageUrl: [],
 }
 
 export default () => {

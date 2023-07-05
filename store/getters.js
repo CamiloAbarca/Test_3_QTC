@@ -2,7 +2,7 @@ export default {
   articlesList (state) {
     return state.articlesList
   },
-  articlesEdit (state) {
-    return state.articlesEdit
+  imageUrl (state) {
+    return state.imageUrl
   }
 }

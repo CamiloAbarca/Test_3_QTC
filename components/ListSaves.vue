@@ -10,9 +10,14 @@
       </thead>
       <tbody>
         <tr
-        v-for="article in articlesList" :key="article.index"
+        v-for="article, index in articlesList" :key="article.index"
         >
           <td v-if="article.fav === true">- {{ article.title }}</td>
+          <td v-if="article.fav === true">
+            <v-btn icon @click="deleteFav(index, article.title, article.content, article.imageUrl, article.fav)">
+            <v-icon>mdi-star-remove</v-icon>
+          </v-btn>
+          </td>
           
         </tr>
       </tbody>
@@ -33,13 +38,17 @@ export default {
 
   methods: {
 
-    /*
-    async deleteFav(index) {
+    async deleteFav(index, title, content, image, fav) {
       const list = [...this.articlesList];
-      list.splice(index, 1);
+      fav = false;
+      list.splice(index, 1, {
+        title: title,
+        content: content,
+        fav: fav,
+        imageUrl: image
+      });
       this.$store.commit(ARTICLES_LIST, list);
     },
-    */
   },
 
   computed: {

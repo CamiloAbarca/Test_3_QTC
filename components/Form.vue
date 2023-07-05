@@ -22,7 +22,7 @@
         v-model="imagen"
         label="Seleccionar imagen"
         accept="image/*"
-        requeried
+        :rules="imagenRules"
         @change="cargarImagen"
       ></v-file-input>
 
@@ -30,7 +30,7 @@
         Crear
       </v-btn>
       <v-card-text>
-        <v-img v-if="imagenUp" :src="imagenUp" :width="200" />
+        <v-img v-if="imagenPreview" :src="imagenPreview" :width="200" />
       </v-card-text>
     </v-form>
   </div>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       files: [],
-      imagenUp: null,
+      imagenPreview: null,
       imagen: null,
       valid: true,
       title: "",
@@ -65,6 +65,7 @@ export default {
           "El contenido no puede tener más de 280 caracteres",
         (v) => v.trim().length !== 0 || "El contenido no puede contener solo espacios"
       ],
+      imagenRules: [(v) => !!v || "Falta imagen"],
     };
   },
 
@@ -72,19 +73,19 @@ export default {
     async createArticle(title = this.title, content = this.content) {
       this.$refs.form.validate();
 
-      if (title == "" || content == "") {
+      if (title == "" || content == "" || !this.imagenPreview) {
         return;
       } else {
         const list = [...this.articlesList];
         const fav = false;
         const edit = true;
-        const newArticle = { title, content, imageUrl: this.imagenUp, fav, edit };
+        const newArticle = { title, content, imageUrl: this.imagenPreview, fav, edit };
         list.unshift(newArticle);
         this.$store.commit(ARTICLES_LIST, list);
         this.title = "";
         this.content = "";
         this.$refs.form.resetValidation();
-        this.imagenUp = null;
+        this.imagenPreview = null;
         this.imagen = null;
       }
     },
@@ -93,7 +94,7 @@ export default {
       const reader = new FileReader();
 
       reader.onload = (event) => {
-        this.imagenUp = event.target.result;
+        this.imagenPreview = event.target.result;
       };
 
       if (this.imagen) {
@@ -103,10 +104,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["articlesList"]),
-    imageUrl() {
-      return this.$store.getters.getImageUrl;
-    },
+    ...mapGetters(["articlesList", "imageUrl"])
   },
 };
 </script>
