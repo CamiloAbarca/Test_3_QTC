@@ -57,7 +57,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 h4{
   text-align: center;

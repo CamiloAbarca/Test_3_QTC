@@ -2,12 +2,16 @@
   <v-container grid-list-md>
     <v-layout col wrap>
       <v-flex>
-        <v-card v-for="(article, index) in articlesList" :key="article.index">
+        <v-card
+          v-for="(article, index) in articlesList"
+          :key="article.index"
+          class="card-margin"
+        >
           <v-card-title>
             {{ article.title }}
           </v-card-title>
           <v-img v-if="article.imageUrl">
-            <v-img :src="article.imageUrl" :width="500" />
+            <v-img :src="article.imageUrl" :width="300" />
           </v-img>
           <v-card-text>
             {{ article.content }}
@@ -59,37 +63,38 @@
           <span class="text-h5">Editar</span>
         </v-card-title>
         <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Título"
-                  required
-                  :value="title"
-                  v-model="title"
-                ></v-text-field>
-              </v-col>
+          <v-row>
+            <v-col cols="12" sm="6" md="4">
+              <v-text-field
+                label="Título"
+                required
+                :value="title"
+                v-model="title"
+              ></v-text-field>
+            </v-col>
 
-              <v-col cols="12">
-                <v-textarea
-                  label="Contenido"
-                  required
-                  :value="content"
-                  v-model="content"
-                ></v-textarea>
-              </v-col>
+            <v-col cols="12">
+              <v-textarea
+                label="Contenido"
+                required
+                :value="content"
+                v-model="content"
+              ></v-textarea>
+            </v-col>
 
-              <v-col cols="12">
-                <v-img v-if="imageUrl" :src="imageUrl" :width="500" />
-              </v-col>
+            <v-col cols="12">
+              <v-img v-if="imageUrl" :src="imageUrl" :width="500" />
+            </v-col>
 
-              <v-col cols="12">
-                <v-file-input
-                  label="Editar imagen"
-                  accept="image/*"
-                  @change="cargarImagen"
-                ></v-file-input>
-              </v-col>
-            </v-row>
+            <v-col cols="12">
+              <v-file-input
+                v-model="imagen"
+                label="Editar imagen"
+                accept="image/*"
+                @change="cargarImagen"
+              ></v-file-input>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -115,6 +120,8 @@ export default {
   data() {
     return {
       index: null,
+      imagen: null,
+      imageUrl: null,
       dialog: false,
       title: "",
       content: "",
@@ -137,7 +144,6 @@ export default {
         content: content,
         fav: fav,
         imageUrl: image,
-        //imageUrl: imageUrl,
       });
       this.$store.commit(ARTICLES_LIST, list);
     },
@@ -149,38 +155,45 @@ export default {
       this.fav = fav;
       this.imageUrl = imageUrl;
       this.dialog = true;
+      this.imagen = null;
     },
 
     async updateArticle() {
       const list = [...this.articlesList];
-      list.splice(this.index, 1, {
+      const updatedArticle = {
         title: this.title,
         content: this.content,
         fav: this.fav,
-        imageUrl: this.imageUrl,
-      });
+        imageUrl: this.imagen
+          ? URL.createObjectURL(this.imagen)
+          : this.imageUrl,
+      };
+      list.splice(this.index, 1, updatedArticle);
       this.dialog = false;
       this.$store.commit(ARTICLES_LIST, list);
     },
 
     async cargarImagen() {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        this.imagenPreview = event.target.result;
-      };
-
       if (this.imagen) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          this.imageUrl = event.target.result;
+        };
+
         reader.readAsDataURL(this.imagen);
       }
     },
   },
 
   computed: {
-    ...mapGetters(["articlesList", "imageUrl"])
+    ...mapGetters(["articlesList"]),
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.card-margin {
+  margin-bottom: 20px;
+}
 </style>

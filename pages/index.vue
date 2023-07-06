@@ -1,25 +1,17 @@
 <template>
   <div id="app" data-app>
-  <v-container class="grey lighten-5">
-    <v-row no-gutters>
-      <v-col order="last">
-        <v-card class="pa-2" outlined tile>
-          <Form />
-        </v-card>
-      </v-col>
-      <v-col>
-        <v-card class="pa-2" outlined tile>
-          <ListCards />
-        </v-card>
-      </v-col>
-      <v-col order="first">
-        <v-card id="fav" class="pa-2" outlined tile>
-          <ListSaves />
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
-</div>
+    <div class="container">
+      <div class="component-border">
+        <Form />
+      </div>
+      <div class="component-scrollable">
+        <ListCards />
+      </div>
+      <div class="component-border component-scrollable">
+        <ListSaves />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -37,10 +29,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-.fav {
-  width: 100%;
-  display: grid;
-  place-content: center;
+.component-border {
+  border: 1px solid #000;
+  padding: 10px;
+}
+
+.component-scrollable {
+  overflow-y: auto;
+  max-height: 500px;
 }
 </style>
