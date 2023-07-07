@@ -69,21 +69,19 @@ export default {
   },
 
   methods: {
-    async createArticle(title = this.title, content = this.content) {
+    async createArticle() {
       this.$refs.form.validate();
 
-      if (title == "" || content == "" || !this.imagen) {
+      if (this.title === "" || this.content === "" || !this.imagen) {
         return;
       } else {
         const list = [...this.articlesList];
         const fav = false;
-        const edit = true;
         const newArticle = {
-          title,
-          content,
+          title: this.title,
+          content: this.content,
           imageUrl: this.imageUrl,
-          fav,
-          edit,
+          fav: false
         };
         list.unshift(newArticle);
         this.$store.commit(ARTICLES_LIST, list);

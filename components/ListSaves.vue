@@ -4,7 +4,6 @@
     height="375px"
   >
     <template v-slot:default>
-      <h4>Artículos guardados</h4>
       <thead>
         
       </thead>
@@ -59,7 +58,4 @@ export default {
 
 <style lang="scss" scoped>
 
-h4{
-  text-align: center;
-}
 </style>
