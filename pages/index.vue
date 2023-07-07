@@ -1,17 +1,17 @@
 <template>
   <v-container class="grey lighten-5" id="app" data-app>
-    <v-row no-gutters>
+    <v-row>
       <v-col>
-        <v-card class="pa-2" outlined tile> <h4>Crear Artículo</h4> </v-card>
-        <v-card class="pa-2 component-border " outlined tile> <FormArticles /> </v-card>
+        <v-card> <h4>Crear Artículo</h4> </v-card>
+        <v-card class=" component-border "> <FormArticles /> </v-card>
       </v-col>
       <v-col order="12">
-        <v-card class="pa-2" outlined tile> <h4>Lista de Artículos</h4> </v-card>
-        <v-card class="pa-2 component-scrollable " outlined tile> <ListCards /> </v-card>
+        <v-card> <h4>Lista de Artículos</h4> </v-card>
+        <v-card class=" component-scrollable "> <ListCards /> </v-card>
       </v-col>
       <v-col order="1">
-        <v-card class="pa-2" outlined tile> <h4>Artículos Guardados</h4> </v-card>
-        <v-card class="pa-2 component-border " outlined tile> <ListSaves /> </v-card>
+        <v-card> <h4>Artículos Guardados</h4> </v-card>
+        <v-card class=" component-border "> <ListSaves /> </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -32,7 +32,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .component-border {
   border: 1px solid #000;
   padding: 10px;
