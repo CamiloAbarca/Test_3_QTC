@@ -23,7 +23,7 @@
           label="Seleccionar imagen"
           accept="image/*"
           :rules="imagenRules"
-          @change="cargarImagen"
+          @change="getImageUrl"
         ></v-file-input>
 
         <v-btn :disabled="!valid" class="mr-4" @click="createArticle()">
@@ -72,17 +72,20 @@ export default {
     async createArticle() {
       this.$refs.form.validate();
 
-      if (this.title === "" || this.content === "" || !this.imagen) {
-        return;
-      } else {
-        const list = [...this.articlesList];
-        const fav = false;
+      if (this.title === "" || this.content === "" || !this.imagen) return
+      try {
+
+        this.loadingImg = true
+        const imgUrl = await  this.getImageUrl(this.imagen)
+
         const newArticle = {
           title: this.title,
           content: this.content,
-          imageUrl: this.imageUrl,
+          imageUrl: imgUrl,
           fav: false
-        };
+        }
+
+        const list = [...this.articlesList];
         list.unshift(newArticle);
         this.$store.commit(ARTICLES_LIST, list);
         this.title = "";
@@ -90,20 +93,23 @@ export default {
         this.$refs.form.resetValidation();
         this.imagen = null;
         this.imageUrl = null;
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loadingImg = false
       }
     },
 
-    cargarImagen() {
-    if (this.imagen) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        this.imageUrl = event.target.result;
-      };
-
-      reader.readAsDataURL(this.imagen);
+    getImageUrl(img) {
+      if (img) {
+        return new Promise ((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve (reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(img)
+        })
+      }
     }
-  },
   },
 
   computed: {

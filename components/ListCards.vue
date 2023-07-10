@@ -16,7 +16,7 @@
           <v-card-text>
             {{ article.content }}
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions style="display: flex; justify-content: flex-end;">
             <v-btn
               icon
               @click="
@@ -25,6 +25,7 @@
                   article.title,
                   article.content,
                   article.fav
+                  //todo: no pasar objeto de esta forma
                 )
               "
             >
@@ -44,6 +45,7 @@
                   article.content,
                   article.imageUrl,
                   article.fav
+                  //todo: no pasar objeto de esta forma
                 )
               "
               :disabled="article.fav"
@@ -91,7 +93,7 @@
                 v-model="imagen"
                 label="Editar imagen"
                 accept="image/*"
-                @change="cargarImagen"
+                @change="getImageUrl"
               ></v-file-input>
             </v-col>
           </v-row>
@@ -173,17 +175,16 @@ export default {
       this.$store.commit(ARTICLES_LIST, list);
     },
 
-    async cargarImagen() {
-      if (this.imagen) {
-        const reader = new FileReader();
-
-        reader.onload = (event) => {
-          this.imageUrl = event.target.result;
-        };
-
-        reader.readAsDataURL(this.imagen);
+    getImageUrl(img) {
+      if (img) {
+        return new Promise ((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve (reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(img)
+        })
       }
-    },
+    }
   },
 
   computed: {
