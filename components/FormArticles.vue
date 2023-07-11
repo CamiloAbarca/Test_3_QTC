@@ -72,18 +72,18 @@ export default {
     async createArticle() {
       this.$refs.form.validate();
 
-      if (this.title === "" || this.content === "" || !this.imagen) return
+      if (this.title === "" || this.content === "" || !this.imagen) return;
       try {
-
-        this.loadingImg = true
-        const imgUrl = await  this.getImageUrl(this.imagen)
+        this.loadingImg = true;
+        const imgUrl = await this.getImageUrl(this.imagen);
 
         const newArticle = {
+          id: crypto.randomUUID(),
           title: this.title,
           content: this.content,
           imageUrl: imgUrl,
-          fav: false
-        }
+          fav: false,
+        };
 
         const list = [...this.articlesList];
         list.unshift(newArticle);
@@ -94,22 +94,22 @@ export default {
         this.imagen = null;
         this.imageUrl = null;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        this.loadingImg = false
+        this.loadingImg = false;
       }
     },
 
     getImageUrl(img) {
       if (img) {
-        return new Promise ((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onload = () => resolve (reader.result)
-          reader.onerror = reject
-          reader.readAsDataURL(img)
-        })
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(img);
+        });
       }
-    }
+    },
   },
 
   computed: {

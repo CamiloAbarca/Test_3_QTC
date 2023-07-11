@@ -1,23 +1,26 @@
 <template>
-  <v-simple-table
-    fixed-header
-    height="375px"
-  >
+  <v-simple-table fixed-header height="375px">
     <template v-slot:default>
-      <thead>
-        
-      </thead>
+      <thead></thead>
       <tbody>
-        <tr
-        v-for="article, index in articlesList" :key="article.index"
-        >
+        <tr v-for="article in articlesList" :key="article.index">
           <td v-if="article.fav === true">- {{ article.title }}</td>
           <td v-if="article.fav === true">
-            <v-btn icon @click="deleteFav(index, article.title, article.content, article.imageUrl, article.fav)">
-            <v-icon>mdi-star-remove</v-icon>
-          </v-btn>
+            <v-btn
+              icon
+              @click="
+                deleteFav(
+                  article.id,
+                  article.title,
+                  article.content,
+                  article.imageUrl
+                  //todo: no pasar objeto de esta forma
+                )
+              "
+            >
+              <v-icon>mdi-star-remove</v-icon>
+            </v-btn>
           </td>
-          
         </tr>
       </tbody>
     </template>
@@ -31,22 +34,23 @@ import { ARTICLES_LIST } from "~/store/mutations.types";
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
 
   methods: {
-
-    async deleteFav(index, title, content, image, fav) {
+    async deleteFav(id, title, content, image) {
       const list = [...this.articlesList];
-      fav = false;
-      list.splice(index, 1, {
-        title: title,
-        content: content,
-        fav: fav,
-        imageUrl: image
-      });
-      this.$store.commit(ARTICLES_LIST, list);
+      const index = list.findIndex((article) => article.id === id);
+      if (index !== -1) {
+        list[index] = {
+          ...list[index],
+          title,
+          content,
+          fav: false,
+          imageUrl: image,
+        };
+        this.$store.commit(ARTICLES_LIST, list);
+      }
     },
   },
 
@@ -57,5 +61,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

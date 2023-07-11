@@ -3,7 +3,7 @@
     <v-layout col wrap>
       <v-flex>
         <v-card
-          v-for="(article, index) in articlesList"
+          v-for="article in articlesList"
           :key="article.index"
           class="card-margin"
         >
@@ -16,12 +16,12 @@
           <v-card-text>
             {{ article.content }}
           </v-card-text>
-          <v-card-actions style="display: flex; justify-content: flex-end;">
+          <v-card-actions style="display: flex; justify-content: flex-end">
             <v-btn
               icon
               @click="
                 btnEditArticle(
-                  index,
+                  article.id,
                   article.title,
                   article.content,
                   article.fav
@@ -32,7 +32,7 @@
               <v-icon>mdi-square-edit-outline</v-icon>
             </v-btn>
 
-            <v-btn icon @click="deleteArticle(index)">
+            <v-btn icon @click="deleteArticle(article.id)">
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
 
@@ -40,11 +40,10 @@
               icon
               @click="
                 addFav(
-                  index,
+                  article.id,
                   article.title,
                   article.content,
-                  article.imageUrl,
-                  article.fav
+                  article.imageUrl
                   //todo: no pasar objeto de esta forma
                 )
               "
@@ -132,28 +131,30 @@ export default {
   },
 
   methods: {
-    async deleteArticle(index) {
-      const list = [...this.articlesList];
-      list.splice(index, 1);
+    async deleteArticle(id) {
+      const list = this.articlesList.filter((article) => article.id !== id);
       this.$store.commit(ARTICLES_LIST, list);
     },
 
-    async addFav(index, title, content, image, fav) {
+    async addFav(id, title, content, image) {
       const list = [...this.articlesList];
-      fav = true;
-      list.splice(index, 1, {
-        title: title,
-        content: content,
-        fav: fav,
-        imageUrl: image,
-      });
-      this.$store.commit(ARTICLES_LIST, list);
+      const index = list.findIndex((article) => article.id === id);
+      if (index !== -1) {
+        list[index] = {
+          ...list[index],
+          title,
+          content,
+          fav: true,
+          imageUrl: image,
+        };
+        this.$store.commit(ARTICLES_LIST, list);
+      }
     },
 
-    async btnEditArticle(index, title, content, imageUrl, fav) {
+    async btnEditArticle(id, title, content, imageUrl, fav) {
       this.title = title;
       this.content = content;
-      this.index = index;
+      this.id = id;
       this.fav = fav;
       this.imageUrl = imageUrl;
       this.dialog = true;
@@ -170,21 +171,25 @@ export default {
           ? URL.createObjectURL(this.imagen)
           : this.imageUrl,
       };
-      list.splice(this.index, 1, updatedArticle);
-      this.dialog = false;
-      this.$store.commit(ARTICLES_LIST, list);
+
+      const index = list.findIndex((article) => article.id === this.id);
+      if (index !== -1) {
+        list.splice(index, 1, updatedArticle);
+        this.dialog = false;
+        this.$store.commit(ARTICLES_LIST, list);
+      }
     },
 
     getImageUrl(img) {
       if (img) {
-        return new Promise ((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onload = () => resolve (reader.result)
-          reader.onerror = reject
-          reader.readAsDataURL(img)
-        })
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(img);
+        });
       }
-    }
+    },
   },
 
   computed: {
