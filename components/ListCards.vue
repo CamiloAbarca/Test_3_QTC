@@ -17,18 +17,7 @@
             {{ article.content }}
           </v-card-text>
           <v-card-actions style="display: flex; justify-content: flex-end">
-            <v-btn
-              icon
-              @click="
-                btnEditArticle(
-                  article.id,
-                  article.title,
-                  article.content,
-                  article.fav
-                  //todo: no pasar objeto de esta forma
-                )
-              "
-            >
+            <v-btn icon @click="btnEditArticle(article.id)">
               <v-icon>mdi-square-edit-outline</v-icon>
             </v-btn>
 
@@ -36,19 +25,7 @@
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              @click="
-                addFav(
-                  article.id,
-                  article.title,
-                  article.content,
-                  article.imageUrl
-                  //todo: no pasar objeto de esta forma
-                )
-              "
-              :disabled="article.fav"
-            >
+            <v-btn icon @click="addFav(article.id)" :disabled="article.fav">
               <v-icon>mdi-star</v-icon>
             </v-btn>
           </v-card-actions>
@@ -136,48 +113,60 @@ export default {
       this.$store.commit(ARTICLES_LIST, list);
     },
 
-    async addFav(id, title, content, image) {
+    async addFav(id) {
       const list = [...this.articlesList];
-      const index = list.findIndex((article) => article.id === id);
-      if (index !== -1) {
-        list[index] = {
-          ...list[index],
-          title,
-          content,
-          fav: true,
-          imageUrl: image,
-        };
-        this.$store.commit(ARTICLES_LIST, list);
-      }
+
+      const obj = list.find((article) => article.id === id);
+
+      const newList = list.map((article) => {
+        if (article.id === id) {
+          return {
+            ...article,
+            title: obj.title,
+            content: obj.content,
+            fav: true,
+            imageUrl: obj.imageUrl,
+          };
+        }
+        return article;
+      });
+
+      this.$store.commit(ARTICLES_LIST, newList);
     },
 
-    async btnEditArticle(id, title, content, imageUrl, fav) {
-      this.title = title;
-      this.content = content;
-      this.id = id;
-      this.fav = fav;
-      this.imageUrl = imageUrl;
+    async btnEditArticle(id) {
+      const list = [...this.articlesList];
+      const obj = list.find((article) => article.id === id);
+
+      this.title = obj.title;
+      this.content = obj.content;
+      this.id = obj.id;
+      this.fav = obj.fav;
+      this.imageUrl = obj.imageUrl;
       this.dialog = true;
       this.imagen = null;
     },
 
     async updateArticle() {
       const list = [...this.articlesList];
-      const updatedArticle = {
-        title: this.title,
-        content: this.content,
-        fav: this.fav,
-        imageUrl: this.imagen
-          ? URL.createObjectURL(this.imagen)
-          : this.imageUrl,
-      };
 
-      const index = list.findIndex((article) => article.id === this.id);
-      if (index !== -1) {
-        list.splice(index, 1, updatedArticle);
-        this.dialog = false;
-        this.$store.commit(ARTICLES_LIST, list);
-      }
+      const newList = list.map((article) => {
+        if (article.id === this.id) {
+          return {
+            ...article,
+            title: this.title,
+            content: this.content,
+            fav: this.fav,
+            imageUrl: this.imagen
+              ? URL.createObjectURL(this.imagen)
+              : this.imageUrl,
+          };
+        }
+        return article;
+      });
+
+      this.dialog = false;
+      this.$store.commit(ARTICLES_LIST, newList);
     },
 
     getImageUrl(img) {

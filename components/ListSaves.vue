@@ -6,18 +6,7 @@
         <tr v-for="article in articlesList" :key="article.index">
           <td v-if="article.fav === true">- {{ article.title }}</td>
           <td v-if="article.fav === true">
-            <v-btn
-              icon
-              @click="
-                deleteFav(
-                  article.id,
-                  article.title,
-                  article.content,
-                  article.imageUrl
-                  //todo: no pasar objeto de esta forma
-                )
-              "
-            >
+            <v-btn icon @click="deleteFav(article.id)">
               <v-icon>mdi-star-remove</v-icon>
             </v-btn>
           </td>
@@ -38,19 +27,25 @@ export default {
   },
 
   methods: {
-    async deleteFav(id, title, content, image) {
+    async deleteFav(id) {
       const list = [...this.articlesList];
-      const index = list.findIndex((article) => article.id === id);
-      if (index !== -1) {
-        list[index] = {
-          ...list[index],
-          title,
-          content,
-          fav: false,
-          imageUrl: image,
-        };
-        this.$store.commit(ARTICLES_LIST, list);
-      }
+
+      const obj = list.find((article) => article.id === id);
+
+      const newList = list.map((article) => {
+        if (article.id === id) {
+          return {
+            ...article,
+            title: obj.title,
+            content: obj.content,
+            fav: false,
+            imageUrl: obj.imageUrl,
+          };
+        }
+        return article;
+      });
+
+      this.$store.commit(ARTICLES_LIST, newList);
     },
   },
 
