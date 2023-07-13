@@ -17,7 +17,7 @@
             {{ article.content }}
           </v-card-text>
           <v-card-actions style="display: flex; justify-content: flex-end">
-            <v-btn icon @click="btnEditArticle(article.id)">
+            <v-btn icon @click="btnEditArticle(article)">
               <v-icon>mdi-square-edit-outline</v-icon>
             </v-btn>
 
@@ -25,7 +25,7 @@
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
 
-            <v-btn icon @click="addFav(article.id)" :disabled="article.fav">
+            <v-btn icon @click="addFav(article)" :disabled="article.fav">
               <v-icon>mdi-star</v-icon>
             </v-btn>
           </v-card-actions>
@@ -113,19 +113,13 @@ export default {
       this.$store.commit(ARTICLES_LIST, list);
     },
 
-    async addFav(id) {
-      const list = [...this.articlesList];
+    async addFav(art) {
 
-      const obj = list.find((article) => article.id === id);
-
-      const newList = list.map((article) => {
-        if (article.id === id) {
+      const newList = [...this.articlesList].map((article) => {
+        if (article.id === art.id) {
           return {
             ...article,
-            title: obj.title,
-            content: obj.content,
-            fav: true,
-            imageUrl: obj.imageUrl,
+            fav: true
           };
         }
         return article;
@@ -134,23 +128,20 @@ export default {
       this.$store.commit(ARTICLES_LIST, newList);
     },
 
-    async btnEditArticle(id) {
-      const list = [...this.articlesList];
-      const obj = list.find((article) => article.id === id);
+    async btnEditArticle(art) {
 
-      this.title = obj.title;
-      this.content = obj.content;
-      this.id = obj.id;
-      this.fav = obj.fav;
-      this.imageUrl = obj.imageUrl;
+      this.title = art.title;
+      this.content = art.content;
+      this.id = art.id;
+      this.fav = art.fav;
+      this.imageUrl = art.imageUrl;
       this.dialog = true;
       this.imagen = null;
     },
 
     async updateArticle() {
-      const list = [...this.articlesList];
 
-      const newList = list.map((article) => {
+      const newList = [...this.articlesList].map((article) => {
         if (article.id === this.id) {
           return {
             ...article,

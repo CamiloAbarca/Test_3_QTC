@@ -6,7 +6,7 @@
         <tr v-for="article in articlesList" :key="article.index">
           <td v-if="article.fav === true">- {{ article.title }}</td>
           <td v-if="article.fav === true">
-            <v-btn icon @click="deleteFav(article.id)">
+            <v-btn icon @click="deleteFav(article)">
               <v-icon>mdi-star-remove</v-icon>
             </v-btn>
           </td>
@@ -27,19 +27,12 @@ export default {
   },
 
   methods: {
-    async deleteFav(id) {
-      const list = [...this.articlesList];
-
-      const obj = list.find((article) => article.id === id);
-
-      const newList = list.map((article) => {
-        if (article.id === id) {
+    async deleteFav(art) {
+      const newList = [...this.articlesList].map((article) => {
+        if (article.id === art.id) {
           return {
             ...article,
-            title: obj.title,
-            content: obj.content,
-            fav: false,
-            imageUrl: obj.imageUrl,
+            fav: false
           };
         }
         return article;
