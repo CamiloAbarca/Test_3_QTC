@@ -7,13 +7,15 @@
       </v-col>
       <v-col order="12">
         <v-card> <h4>Lista de Artículos</h4> </v-card>
-        <v-card class=" component-scrollable "> <ListCards /> </v-card>
+        <v-card class=" component-scrollable "> <ListCards @open-dialog="showDialog"/> </v-card>
       </v-col>
       <v-col order="1">
         <v-card> <h4>Artículos Guardados</h4> </v-card>
         <v-card class=" component-border "> <ListSaves /> </v-card>
       </v-col>
     </v-row>
+
+    <DialogUpdate v-if="displayDialog" />
   </v-container>
 </template>
 
@@ -21,12 +23,25 @@
 import ListCards from "../components/ListCards.vue";
 import FormArticles from "../components/FormArticles.vue";
 import ListSaves from "../components/ListSaves.vue";
+import DialogUpdate from "../components/DialogUpdate.vue";
 
 export default {
   components: {
     ListCards,
     FormArticles,
     ListSaves,
+    DialogUpdate
+  },
+
+  data() {
+    return {
+      displayDialog: false,
+    };
+  },
+  methods: {
+    showDialog() {
+      this.displayDialog = true;
+    },
   },
 };
 </script>
