@@ -13,9 +13,10 @@
         <v-card> <h4>Artículos Guardados</h4> </v-card>
         <v-card class=" component-border "> <ListSaves /> </v-card>
       </v-col>
-    </v-row>
 
-    <DialogUpdate v-if="displayDialog" :article="selectedArticle" />
+      
+      <DialogUpdate v-if="selectedArticle" :article="selectedArticle" @close-dialog="selectedArticle = null" />
+    </v-row>
   </v-container>
 </template>
 
@@ -23,30 +24,24 @@
 import ListCards from "../components/ListCards.vue";
 import FormArticles from "../components/FormArticles.vue";
 import ListSaves from "../components/ListSaves.vue";
-import DialogUpdate from "../components/DialogUpdate.vue";
+import DialogUpdate from '../components/DialogUpdate.vue';
 
 export default {
   components: {
     ListCards,
     FormArticles,
     ListSaves,
-    DialogUpdate
+    DialogUpdate,
   },
 
   data() {
     return {
-      displayDialog: false,
       selectedArticle: null,
     };
   },
   methods: {
-    showDialog() {
-      this.displayDialog = true;
-    },
-
     openDialog(article) {
       this.selectedArticle = article;
-      this.displayDialog = true;
     },
   },
 };

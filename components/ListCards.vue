@@ -17,7 +17,8 @@
             {{ article.content }}
           </v-card-text>
           <v-card-actions style="display: flex; justify-content: flex-end">
-            <v-btn icon @click="btnEditArticle(article)">
+
+            <v-btn icon @click="openDialog(article)">
               <v-icon>mdi-square-edit-outline</v-icon>
             </v-btn>
 
@@ -27,11 +28,6 @@
 
             <v-btn icon @click="addFav(article)" :disabled="article.fav">
               <v-icon>mdi-star</v-icon>
-            </v-btn>
-
-            <!--Botón de prueba-->
-            <v-btn icon @click="openDialog(article)">
-              <v-icon>mdi-pencil</v-icon>
             </v-btn>
 
           </v-card-actions>
@@ -90,29 +86,6 @@ export default {
       this.dialog = true;
       this.imagen = null;
     },
-    
-    /*
-    async updateArticle() {
-
-      const newList = [...this.articlesList].map((article) => {
-        if (article.id === this.id) {
-          return {
-            ...article,
-            title: this.title,
-            content: this.content,
-            fav: this.fav,
-            imageUrl: this.imagen
-              ? URL.createObjectURL(this.imagen)
-              : this.imageUrl,
-          };
-        }
-        return article;
-      });
-
-      this.dialog = false;
-      this.$store.commit(ARTICLES_LIST, newList);
-    },
-    */
 
     getImageUrl(img) {
       if (img) {
@@ -126,8 +99,9 @@ export default {
     },
 
     openDialog(article) {
-    this.$emit('open-dialog', article);
-  },
+      this.$emit('open-dialog', article);
+    },
+
   },
 
   computed: {

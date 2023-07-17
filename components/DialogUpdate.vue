@@ -92,25 +92,7 @@ export default {
         });
       }
     },
-    updateArticle() {
-      const newList = [...this.articlesList].map((article) => {
-        if (article.id === this.id) {
-          return {
-            ...article,
-            title: this.title,
-            content: this.content,
-            fav: this.fav,
-            imageUrl: this.imagen
-              ? URL.createObjectURL(this.imagen)
-              : this.imageUrl,
-          };
-        }
-        return article;
-      });
-
-      this.dialog = false;
-      this.$store.commit(ARTICLES_LIST, newList);
-    },
+    
   },
 
   computed: {
