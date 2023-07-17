@@ -30,7 +30,7 @@
             </v-btn>
 
             <!--Botón de prueba-->
-            <v-btn icon @click="openDialog">
+            <v-btn icon @click="openDialog(article)">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
 
@@ -90,7 +90,8 @@ export default {
       this.dialog = true;
       this.imagen = null;
     },
-
+    
+    /*
     async updateArticle() {
 
       const newList = [...this.articlesList].map((article) => {
@@ -111,6 +112,7 @@ export default {
       this.dialog = false;
       this.$store.commit(ARTICLES_LIST, newList);
     },
+    */
 
     getImageUrl(img) {
       if (img) {
@@ -123,9 +125,9 @@ export default {
       }
     },
 
-    openDialog() {
-      this.$emit('open-dialog');
-    },
+    openDialog(article) {
+    this.$emit('open-dialog', article);
+  },
   },
 
   computed: {

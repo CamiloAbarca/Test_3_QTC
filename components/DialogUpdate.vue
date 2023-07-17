@@ -13,7 +13,7 @@
                   label="Título"
                   required
                   :value="title"
-                  v-model="title"
+                  v-model="article.title"
                 ></v-text-field>
               </v-col>
 
@@ -22,12 +22,16 @@
                   label="Contenido"
                   required
                   :value="content"
-                  v-model="content"
+                  v-model="article.content"
                 ></v-textarea>
               </v-col>
 
               <v-col cols="12">
-                <v-img v-if="imageUrl" :src="imageUrl" :width="500" />
+                <v-img
+                  v-if="article.imageUrl"
+                  :src="article.imageUrl"
+                  :width="500"
+                />
               </v-col>
 
               <v-col cols="12">
@@ -56,7 +60,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
+import { ARTICLES_LIST } from "~/store/mutations.types";
+
 export default {
+  props: {
+    article: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       imagen: null,
@@ -65,6 +79,42 @@ export default {
       title: "",
       content: "",
     };
+  },
+
+  methods: {
+    getImageUrl(img) {
+      if (img) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(img);
+        });
+      }
+    },
+    updateArticle() {
+      const newList = [...this.articlesList].map((article) => {
+        if (article.id === this.id) {
+          return {
+            ...article,
+            title: this.title,
+            content: this.content,
+            fav: this.fav,
+            imageUrl: this.imagen
+              ? URL.createObjectURL(this.imagen)
+              : this.imageUrl,
+          };
+        }
+        return article;
+      });
+
+      this.dialog = false;
+      this.$store.commit(ARTICLES_LIST, newList);
+    },
+  },
+
+  computed: {
+    ...mapGetters(["articlesList"]),
   },
 };
 </script>

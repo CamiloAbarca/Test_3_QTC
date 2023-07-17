@@ -7,7 +7,7 @@
       </v-col>
       <v-col order="12">
         <v-card> <h4>Lista de Artículos</h4> </v-card>
-        <v-card class=" component-scrollable "> <ListCards @open-dialog="showDialog"/> </v-card>
+        <v-card class=" component-scrollable "> <ListCards @open-dialog="openDialog" /> </v-card>
       </v-col>
       <v-col order="1">
         <v-card> <h4>Artículos Guardados</h4> </v-card>
@@ -15,7 +15,7 @@
       </v-col>
     </v-row>
 
-    <DialogUpdate v-if="displayDialog" />
+    <DialogUpdate v-if="displayDialog" :article="selectedArticle" />
   </v-container>
 </template>
 
@@ -36,10 +36,16 @@ export default {
   data() {
     return {
       displayDialog: false,
+      selectedArticle: null,
     };
   },
   methods: {
     showDialog() {
+      this.displayDialog = true;
+    },
+
+    openDialog(article) {
+      this.selectedArticle = article;
       this.displayDialog = true;
     },
   },
