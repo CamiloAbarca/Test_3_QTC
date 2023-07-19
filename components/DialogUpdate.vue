@@ -92,7 +92,18 @@ export default {
         });
       }
     },
-    
+
+    updateArticle() {
+      const updatedArticle = {
+        id: this.article.id,
+        title: this.article.title,
+        content: this.article.content,
+        imageUrl: this.article.imageUrl,
+      };
+
+      this.$emit("update-article", updatedArticle);
+      this.dialog = false;
+    },
   },
 
   computed: {

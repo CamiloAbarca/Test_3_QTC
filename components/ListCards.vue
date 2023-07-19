@@ -34,6 +34,7 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <DialogUpdate v-if="selectedArticle" :article="selectedArticle" @close-dialog="selectedArticle = null" />
   </v-container>
 </template>
 
@@ -42,7 +43,15 @@ import { mapGetters } from "vuex";
 
 import { ARTICLES_LIST } from "~/store/mutations.types";
 
+
+import DialogUpdate from '../components/DialogUpdate.vue';
+
 export default {
+
+  components: {
+    DialogUpdate,
+  },
+
   data() {
     return {
       index: null,
@@ -52,6 +61,7 @@ export default {
       title: "",
       content: "",
       fav: "",
+      selectedArticle: null,
     };
   },
 
@@ -100,6 +110,19 @@ export default {
 
     openDialog(article) {
       this.$emit('open-dialog', article);
+      this.selectedArticle = article;
+    },
+
+
+    updateArticle(updatedArticle) {
+      const updatedList = this.articlesList.map((article) => {
+        if (article.id === updatedArticle.id) {
+          return updatedArticle;
+        }
+        return article;
+      });
+
+      this.$store.commit(ARTICLES_LIST, updatedList);
     },
 
   },
