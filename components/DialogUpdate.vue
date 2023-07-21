@@ -62,8 +62,6 @@
 <script>
 import { mapGetters } from "vuex";
 
-import { ARTICLES_LIST } from "~/store/mutations.types";
-
 export default {
   props: {
     article: {
@@ -94,13 +92,16 @@ export default {
     },
 
     updateArticle() {
+
+      const imgUrl = this.getImageUrl(this.imagen);
       const updatedArticle = {
         id: this.article.id,
         title: this.article.title,
-        content: this.article.content,
-        imageUrl: this.article.imageUrl,
+        content: this.content,
+        imageUrl: imgUrl,
+        fav: this.article.fav
       };
-
+      
       this.$emit("update-article", updatedArticle);
       this.dialog = false;
     },

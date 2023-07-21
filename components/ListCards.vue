@@ -7,13 +7,13 @@
           :key="article.index"
           class="card-margin"
         >
-          <v-card-title>
+          <v-card-title @update-article="title = $event">
             {{ article.title }}
           </v-card-title>
-          <v-img v-if="article.imageUrl">
+          <v-img v-if="article.imageUrl" @update-article="imageUrl = $event">
             <v-img :src="article.imageUrl" :width="300" />
           </v-img>
-          <v-card-text>
+          <v-card-text @update-article="content = $event">
             {{ article.content }}
           </v-card-text>
           <v-card-actions style="display: flex; justify-content: flex-end">
@@ -29,12 +29,11 @@
             <v-btn icon @click="addFav(article)" :disabled="article.fav">
               <v-icon>mdi-star</v-icon>
             </v-btn>
-
           </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
-    <DialogUpdate v-if="selectedArticle" :article="selectedArticle" @close-dialog="selectedArticle = null" />
+    <DialogUpdate v-if="selectedArticle" :article="selectedArticle" />
   </v-container>
 </template>
 
@@ -86,17 +85,6 @@ export default {
       this.$store.commit(ARTICLES_LIST, newList);
     },
 
-    async btnEditArticle(art) {
-
-      this.title = art.title;
-      this.content = art.content;
-      this.id = art.id;
-      this.fav = art.fav;
-      this.imageUrl = art.imageUrl;
-      this.dialog = true;
-      this.imagen = null;
-    },
-
     getImageUrl(img) {
       if (img) {
         return new Promise((resolve, reject) => {
@@ -109,23 +97,10 @@ export default {
     },
 
     openDialog(article) {
-      this.$emit('open-dialog', article);
       this.selectedArticle = article;
     },
-
-
-    updateArticle(updatedArticle) {
-      const updatedList = this.articlesList.map((article) => {
-        if (article.id === updatedArticle.id) {
-          return updatedArticle;
-        }
-        return article;
-      });
-
-      this.$store.commit(ARTICLES_LIST, updatedList);
-    },
-
   },
+  
 
   computed: {
     ...mapGetters(["articlesList"]),
