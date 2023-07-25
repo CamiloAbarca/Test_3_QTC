@@ -30,7 +30,7 @@
                 <v-img
                   v-if="article.imageUrl"
                   :src="article.imageUrl"
-                  :width="500"
+                  :width="200"
                 />
               </v-col>
 
@@ -76,6 +76,7 @@ export default {
       dialog: true,
       title: "",
       content: "",
+      updatedImage: null
     };
   },
 
@@ -91,13 +92,14 @@ export default {
       }
     },
 
-    updateArticle() {
+    async updateArticle() {
 
-      const imgUrl = this.getImageUrl(this.imagen);
+      const imgUrl = await this.getImageUrl(this.imagen);
+
       const updatedArticle = {
         id: this.article.id,
         title: this.article.title,
-        content: this.content,
+        content: this.article.content,
         imageUrl: imgUrl,
         fav: this.article.fav
       };

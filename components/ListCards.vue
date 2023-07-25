@@ -10,7 +10,7 @@
           <v-card-title @update-article="title = $event">
             {{ article.title }}
           </v-card-title>
-          <v-img v-if="article.imageUrl" @update-article="imageUrl = $event">
+          <v-img v-if="article.imageUrl">
             <v-img :src="article.imageUrl" :width="300" />
           </v-img>
           <v-card-text @update-article="content = $event">
@@ -33,7 +33,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <DialogUpdate v-if="selectedArticle" :article="selectedArticle" />
+    <DialogUpdate v-if="selectedArticle" :article="selectedArticle" @update-article="onArticleUpdated" />
   </v-container>
 </template>
 
@@ -98,6 +98,16 @@ export default {
 
     openDialog(article) {
       this.selectedArticle = article;
+    },
+
+    onArticleUpdated(updatedArticle) {
+      const updatedList = this.articlesList.map((article) => {
+        if (article.id === updatedArticle.id) {
+          return updatedArticle;
+        }
+        return article;
+      });
+      this.$store.commit(ARTICLES_LIST, updatedList);
     },
   },
   
