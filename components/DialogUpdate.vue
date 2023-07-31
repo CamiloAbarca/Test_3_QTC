@@ -46,7 +46,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
+            <v-btn color="blue darken-1" text @click="closeDialog">
               Cancelar
             </v-btn>
             <v-btn color="blue darken-1" text @click="updateArticle()">
@@ -106,6 +106,19 @@ export default {
       
       this.$emit("update-article", updatedArticle);
       this.dialog = false;
+    },
+
+    closeDialog(){
+      this.dialog = false
+    }
+  },
+
+  watch: {
+    article: {
+      handler() {
+        this.dialog = true;
+      },
+      immediate: true,
     },
   },
 
